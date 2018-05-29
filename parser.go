@@ -1,4 +1,4 @@
-package composerlockaparser
+package composerlockparser
 
 import (
 	"encoding/json"
@@ -8,8 +8,8 @@ import (
 	"strings"
 )
 
-type composerInfo struct {
-	pathToLockFile string
+type ComposerInfo struct {
+	PathToLockFile string
 	Packages       []Package
 }
 
@@ -20,8 +20,8 @@ type Package struct {
 	Authors []string
 }
 
-func (c *composerInfo) parse() {
-	raw, err := ioutil.ReadFile(c.pathToLockFile)
+func (c *ComposerInfo) Parse() {
+	raw, err := ioutil.ReadFile(c.PathToLockFile)
 	if err != nil {
 		fmt.Println(err.Error())
 		os.Exit(1)
@@ -29,7 +29,7 @@ func (c *composerInfo) parse() {
 	json.Unmarshal(raw, c)
 }
 
-func (c *composerInfo) getPackageByName(name string) Package {
+func (c *ComposerInfo) GetPackageByName(name string) Package {
 	p := Package{}
 	for _, cp := range c.Packages {
 		if name == cp.Name {
@@ -39,7 +39,7 @@ func (c *composerInfo) getPackageByName(name string) Package {
 	return p
 }
 
-func (c *composerInfo) getPackageListByPrefix(prefix string) []Package {
+func (c *ComposerInfo) GetPackageListByPrefix(prefix string) []Package {
 	packageList := []Package{}
 	for _, cp := range c.Packages {
 		if strings.HasPrefix(cp.Name, prefix) {
