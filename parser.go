@@ -2,15 +2,12 @@ package composerlockparser
 
 import (
 	"encoding/json"
-	"fmt"
 	"io/ioutil"
-	"os"
 	"strings"
 )
 
 type ComposerInfo struct {
-	PathToLockFile string
-	Packages       []Package
+	Packages []Package
 }
 
 type Package struct {
@@ -20,13 +17,12 @@ type Package struct {
 	Authors []string
 }
 
-func (c *ComposerInfo) Parse() {
-	raw, err := ioutil.ReadFile(c.PathToLockFile)
+func (c *ComposerInfo) Parse(path string) error {
+	raw, err := ioutil.ReadFile(path)
 	if err != nil {
-		fmt.Println(err.Error())
-		os.Exit(1)
+		return err
 	}
-	json.Unmarshal(raw, c)
+	return json.Unmarshal(raw, c)
 }
 
 func (c *ComposerInfo) GetPackageByName(name string) Package {

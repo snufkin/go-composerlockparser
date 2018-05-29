@@ -2,12 +2,17 @@ package composerlockparser
 
 import (
 	"fmt"
+	"os"
 )
 
 func main() {
 	c := new(ComposerInfo)
-	c.PathToLockFile = "composer.lock"
-	c.Parse()
+	err := c.Parse("composer.lock")
+
+	if err != nil {
+		fmt.Println(err.Error())
+		os.Exit(1)
+	}
 
 	// Get a single package by name.
 	p := c.GetPackageByName("drupal/embed")
